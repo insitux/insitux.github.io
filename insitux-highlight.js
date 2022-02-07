@@ -24,6 +24,7 @@ function insituxHighlight(code) {
       .replaceAll(">", "&gt;")
       .replaceAll("<", "&lt;")
       .replaceAll("\n", "\\n")
+      .replaceAll("\r", "\\r")
       .trimEnd();
     if (typ == "(" || typ == ")") {
       depth -= Number(typ == ")");
