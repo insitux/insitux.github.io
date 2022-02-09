@@ -16,7 +16,6 @@ function insituxHighlight(code) {
     }
     lines[0] += " ".repeat(col - lineLen);
     if (typ == "str") {
-      text = text.replaceAll('"', "\\\"");
       text = `"${text}"`;
     }
     lineLen = col + text.length;
