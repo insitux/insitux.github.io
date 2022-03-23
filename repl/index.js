@@ -9,6 +9,7 @@ function executeInput(input) {
     insituxHighlight(input) +
     "</code>\n";
   const errors = insituxInvoke(input)
+    .output
     .map(({ type, text }) =>
       type == "message" ? `<m>${text}</m>` : `<e>${text}</e>`,
     )
