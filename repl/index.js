@@ -9,8 +9,7 @@ function executeInput(input) {
     insituxHighlight(input) +
     "</code>\n";
   const errors = insituxInvoke(input)
-    .output
-    .map(({ type, text }) =>
+    .output.map(({ type, text }) =>
       type == "message" ? `<m>${text}</m>` : `<e>${text}</e>`,
     )
     .join("");
@@ -38,8 +37,6 @@ function historyAppend(str) {
 function browserExe(name, args) {
   const nullVal = { t: "null", v: undefined };
   switch (name) {
-    case "prompt":
-      return { kind: "val", value: { t: "str", v: prompt(args[0].v) } };
     case "clear":
       setTimeout(() => ($history.innerHTML = ""), 1000);
       break;
@@ -104,6 +101,21 @@ function insituxSet(key, val) {
   localStorage.setItem("repl", JSON.stringify(state));
 }
 
+const functions = {
+  prompt: {
+    definition: {
+      exactArity: 1,
+      params: ["str"],
+      returns: ["str"],
+      hasEffects: true,
+    },
+    handler: params => ({
+      kind: "val",
+      value: { t: "str", v: prompt(params[0].v) },
+    }),
+  },
+};
+
 function insituxInvoke(code) {
   return insitux(
     {
@@ -114,7 +126,7 @@ function insituxInvoke(code) {
       print(str, withNewLine) {
         historyAppend(`${str}${withNewLine ? "\n" : ""}`);
       },
-      functions: [],
+      functions,
       rangeBudget: 10000,
       loopBudget: 10000,
       callBudget: 10000,
